@@ -116,8 +116,6 @@ import type { ValidationResult } from "@/lib/gradebookExpressionTester";
 import GradebookCell from "./gradebookCell";
 import { GradebookPopoverProvider, useGradebookPopover } from "./GradebookPopoverProvider";
 import ImportGradebookColumn from "./importGradebookColumn";
-import { group } from "console";
-import { id } from "zod/v4/locales";
 
 const GRADE_COL_WIDTH = 120;
 
@@ -246,14 +244,7 @@ function buildVisibleReorderUnits(args: {
       units.push([colId]);
       continue;
     }
-    const slugParts = col.slug.split("-");
-    let baseGroupName: string;
-    if (slugParts[0] === "assignment" && slugParts.length >= 3) {
-      baseGroupName = `${slugParts[0]}-${slugParts[1]}`;
-    } else {
-      baseGroupName = slugParts[0] || "other";
-    }
-    const groupEntry = Object.entries(groupedColumns).find(([key, group]) => group.columns.some((c) => c.id === colId));
+    const groupEntry = Object.entries(groupedColumns).find(([, group]) => group.columns.some((c) => c.id === colId));
     if (!groupEntry || groupEntry[1].columns.length <= 1) {
       units.push([colId]);
       continue;
@@ -3229,9 +3220,7 @@ export default function GradebookTable() {
         i++;
         continue;
       }
-      const prefix = column.slug.split("-")[0];
-      const baseGroupName = prefix || "other";
-      const groupEntry = Object.entries(groupedColumns).find(([key, group]) =>
+      const groupEntry = Object.entries(groupedColumns).find(([, group]) =>
         group.columns.some((col) => col.id === columnId)
       );
       if (!groupEntry || groupEntry[1].columns.length <= 1) {
@@ -3278,10 +3267,7 @@ export default function GradebookTable() {
         const column = gradebookColumns.find((col) => col.id === columnId);
 
         if (column) {
-          const prefix = column.slug.split("-")[0];
-          const baseGroupName = prefix || "other";
-
-          const groupEntry = Object.entries(groupedColumns).find(([key, group]) =>
+          const groupEntry = Object.entries(groupedColumns).find(([, group]) =>
             group.columns.some((col) => col.id === columnId)
           );
 
