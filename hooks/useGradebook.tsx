@@ -1401,6 +1401,10 @@ export class GradebookController {
   /** Single-row controller for this gradebook (hydrates expression_prefix, etc.). */
   readonly gradebook_row: TableController<"gradebooks">;
   readonly gradebook_columns: TableController<"gradebook_columns">;
+
+  // Declaring gradebook_column_groups
+  readonly gradebook_column_groups: TableController<"gradebook_column_groups">;
+
   readonly table: GradebookCellController;
   readonly assignments_table: TableController<"assignments">;
 
@@ -1444,6 +1448,13 @@ export class GradebookController {
       client,
       table: "gradebook_columns",
       query: client.from("gradebook_columns").select("*").eq("gradebook_id", gradebook_id),
+      classRealTimeController
+    });
+    // Initializing gradebook column groups
+    this.gradebook_column_groups = new TableController({
+      client,
+      table: "gradebook_column_groups",
+      query: client.from("gradebook_column_groups").select("*").eq("gradebook_id", gradebook_id),
       classRealTimeController
     });
     const { unsubscribe: gradebookRowUnsubscribe } = this.gradebook_row.list(() => {

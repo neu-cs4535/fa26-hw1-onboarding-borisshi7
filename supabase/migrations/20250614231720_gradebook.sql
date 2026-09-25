@@ -109,7 +109,7 @@ create table "public"."gradebook_columns" (
     "score_expression" text,
     "show_max_score" boolean not null default true,
     "slug" text not null,
-    "sort_order" integer 
+    "sort_order" integer
 );
 
 -- Function to handle auto-calculation of sort_order when null
